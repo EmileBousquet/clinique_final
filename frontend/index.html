@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinique Médicale</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f6f9; }
+        .brand-icon { font-size: 1.4rem; }
+        #content { min-height: 60vh; }
+        .card { box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+        .login-wrapper { max-width: 420px; margin: 8vh auto; }
+        .slot-btn { margin: 4px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-primary d-none" id="navbar">
+    <div class="container">
+        <span class="navbar-brand mb-0 h1">🏥 Clinique Médicale</span>
+        <div class="d-flex align-items-center text-white">
+            <span class="me-3" id="user-info"></span>
+            <button class="btn btn-outline-light btn-sm" id="logout-btn">Déconnexion</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+
+    <div id="login-view" class="login-wrapper">
+        <div class="card">
+            <div class="card-body p-4">
+                <h4 class="card-title text-center mb-4">🏥 Connexion</h4>
+                <div id="login-error" class="alert alert-danger d-none"></div>
+                <form id="login-form">
+                    <div class="mb-3">
+                        <label class="form-label">Courriel</label>
+                        <input type="email" class="form-control" id="login-email" value="admin@clinique.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control" id="login-password" value="Admin@123" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+                </form>
+                <p class="text-muted small mt-3 mb-0">Admin par défaut : admin@clinique.com / Admin@123. Les patients peuvent créer un compte ci-dessous.</p>
+                <button class="btn btn-link w-100 mt-2" id="show-register">Créer un compte patient</button>
+            </div>
+        </div>
+
+        <div class="card mt-3 d-none" id="register-card">
+            <div class="card-body p-4">
+                <h5 class="card-title mb-3">Inscription patient</h5>
+                <div id="register-error" class="alert alert-danger d-none"></div>
+                <form id="register-form">
+                    <div class="row g-2">
+                        <div class="col"><input class="form-control" id="reg-nom" placeholder="Nom" required></div>
+                        <div class="col"><input class="form-control" id="reg-prenom" placeholder="Prénom" required></div>
+                    </div>
+                    <input type="email" class="form-control mt-2" id="reg-email" placeholder="Courriel" required>
+                    <input type="password" class="form-control mt-2" id="reg-password" placeholder="Mot de passe (min. 6)" required>
+                    <input class="form-control mt-2" id="reg-tel" placeholder="Téléphone">
+                    <input type="date" class="form-control mt-2" id="reg-naissance">
+                    <button type="submit" class="btn btn-success w-100 mt-3">Créer le compte</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-view" class="d-none">
+        <ul class="nav nav-pills mb-4" id="menu"></ul>
+        <div id="messages"></div>
+        <div id="content"></div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

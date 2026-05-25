@@ -1,0 +1,21 @@
+package com.clinique.api.dto.response;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+public record ApiError(
+        LocalDateTime timestamp,
+        int status,
+        String error,
+        String message,
+        String path,
+        Map<String, String> erreurs
+) {
+    public static ApiError of(int status, String error, String message, String path) {
+        return new ApiError(LocalDateTime.now(), status, error, message, path, null);
+    }
+
+    public static ApiError validation(int status, String error, String message, String path, Map<String, String> erreurs) {
+        return new ApiError(LocalDateTime.now(), status, error, message, path, erreurs);
+    }
+}

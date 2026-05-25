@@ -1,0 +1,520 @@
+{
+  "info": {
+    "name": "API Clinique Medicale",
+    "_postman_id": "b6d2c1a0-5e3f-4c2a-9d10-cliniqueapi0001",
+    "description": "Collection de test de l'API REST de gestion de clinique (Spring Boot + JWT). Le jeton JWT est injecte automatiquement dans la variable {{token}} apres une connexion reussie (voir les scripts des requetes du dossier Auth).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "medecinId",
+      "value": "1"
+    },
+    {
+      "key": "patientId",
+      "value": "1"
+    },
+    {
+      "key": "specialiteId",
+      "value": "1"
+    },
+    {
+      "key": "rendezVousId",
+      "value": "1"
+    },
+    {
+      "key": "ordonnanceId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register (patient)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    console.log('Token JWT enregistre dans {{token}}');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Tremblay\",\n  \"prenom\": \"Sophie\",\n  \"email\": \"sophie.tremblay@mail.com\",\n  \"motDePasse\": \"Patient@123\",\n  \"telephone\": \"514-555-0101\",\n  \"dateNaissance\": \"1992-03-15\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "auth", "register"] }
+          }
+        },
+        {
+          "name": "Login (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    console.log('Token ADMIN enregistre');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@clinique.com\",\n  \"motDePasse\": \"Admin@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Login (patient)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    console.log('Token PATIENT enregistre');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sophie.tremblay@mail.com\",\n  \"motDePasse\": \"Patient@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Login (medecin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    console.log('Token MEDECIN enregistre');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"house@clinique.com\",\n  \"motDePasse\": \"Medecin@123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Specialites",
+      "item": [
+        {
+          "name": "Lister les specialites",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/specialites", "host": ["{{baseUrl}}"], "path": ["api", "specialites"] }
+          }
+        },
+        {
+          "name": "Detail specialite",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/specialites/{{specialiteId}}", "host": ["{{baseUrl}}"], "path": ["api", "specialites", "{{specialiteId}}"] }
+          }
+        },
+        {
+          "name": "Creer specialite (ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Neurologie\",\n  \"description\": \"Maladies du systeme nerveux\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/specialites", "host": ["{{baseUrl}}"], "path": ["api", "specialites"] }
+          }
+        },
+        {
+          "name": "Modifier specialite (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Neurologie\",\n  \"description\": \"Systeme nerveux central et peripherique\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/specialites/{{specialiteId}}", "host": ["{{baseUrl}}"], "path": ["api", "specialites", "{{specialiteId}}"] }
+          }
+        },
+        {
+          "name": "Supprimer specialite (ADMIN)",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/specialites/{{specialiteId}}", "host": ["{{baseUrl}}"], "path": ["api", "specialites", "{{specialiteId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Medecins",
+      "item": [
+        {
+          "name": "Creer medecin (ADMIN)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.id) { pm.collectionVariables.set('medecinId', json.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"House\",\n  \"prenom\": \"Gregory\",\n  \"email\": \"house@clinique.com\",\n  \"motDePasse\": \"Medecin@123\",\n  \"specialiteId\": {{specialiteId}},\n  \"dureeConsultationMinutes\": 30,\n  \"horaires\": [\n    { \"jourSemaine\": \"MONDAY\", \"heureDebut\": \"09:00:00\", \"heureFin\": \"12:00:00\" },\n    { \"jourSemaine\": \"MONDAY\", \"heureDebut\": \"13:00:00\", \"heureFin\": \"17:00:00\" },\n    { \"jourSemaine\": \"WEDNESDAY\", \"heureDebut\": \"09:00:00\", \"heureFin\": \"15:00:00\" }\n  ]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/medecins", "host": ["{{baseUrl}}"], "path": ["api", "medecins"] }
+          }
+        },
+        {
+          "name": "Lister les medecins",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/medecins", "host": ["{{baseUrl}}"], "path": ["api", "medecins"] }
+          }
+        },
+        {
+          "name": "Detail medecin",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/medecins/{{medecinId}}", "host": ["{{baseUrl}}"], "path": ["api", "medecins", "{{medecinId}}"] }
+          }
+        },
+        {
+          "name": "Modifier medecin (ADMIN)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"House\",\n  \"prenom\": \"Gregory\",\n  \"specialiteId\": {{specialiteId}},\n  \"dureeConsultationMinutes\": 45\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/medecins/{{medecinId}}", "host": ["{{baseUrl}}"], "path": ["api", "medecins", "{{medecinId}}"] }
+          }
+        },
+        {
+          "name": "Horaires du medecin",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/medecins/{{medecinId}}/horaires", "host": ["{{baseUrl}}"], "path": ["api", "medecins", "{{medecinId}}", "horaires"] }
+          }
+        },
+        {
+          "name": "Remplacer horaires (ADMIN/MEDECIN)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  { \"jourSemaine\": \"TUESDAY\", \"heureDebut\": \"08:00:00\", \"heureFin\": \"12:00:00\" },\n  { \"jourSemaine\": \"THURSDAY\", \"heureDebut\": \"13:00:00\", \"heureFin\": \"18:00:00\" }\n]"
+            },
+            "url": { "raw": "{{baseUrl}}/api/medecins/{{medecinId}}/horaires", "host": ["{{baseUrl}}"], "path": ["api", "medecins", "{{medecinId}}", "horaires"] }
+          }
+        },
+        {
+          "name": "Disponibilites du medecin (date)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/medecins/{{medecinId}}/disponibilites?date=2026-06-01",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "medecins", "{{medecinId}}", "disponibilites"],
+              "query": [{ "key": "date", "value": "2026-06-01" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Patients",
+      "item": [
+        {
+          "name": "Lister patients (ADMIN/MEDECIN)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/patients", "host": ["{{baseUrl}}"], "path": ["api", "patients"] }
+          }
+        },
+        {
+          "name": "Mon profil (PATIENT)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/patients/me", "host": ["{{baseUrl}}"], "path": ["api", "patients", "me"] }
+          }
+        },
+        {
+          "name": "Modifier mon profil (PATIENT)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nom\": \"Tremblay\",\n  \"prenom\": \"Sophie\",\n  \"telephone\": \"514-555-9999\",\n  \"dateNaissance\": \"1992-03-15\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/patients/me", "host": ["{{baseUrl}}"], "path": ["api", "patients", "me"] }
+          }
+        },
+        {
+          "name": "Detail patient (ADMIN/MEDECIN)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/patients/{{patientId}}", "host": ["{{baseUrl}}"], "path": ["api", "patients", "{{patientId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rendez-vous",
+      "item": [
+        {
+          "name": "Prendre un rendez-vous (PATIENT)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.id) { pm.collectionVariables.set('rendezVousId', json.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medecinId\": {{medecinId}},\n  \"dateHeureDebut\": \"2026-06-01T09:00:00\",\n  \"motif\": \"Consultation de suivi\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/rendez-vous", "host": ["{{baseUrl}}"], "path": ["api", "rendez-vous"] }
+          }
+        },
+        {
+          "name": "Tous les rendez-vous (ADMIN)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/rendez-vous", "host": ["{{baseUrl}}"], "path": ["api", "rendez-vous"] }
+          }
+        },
+        {
+          "name": "Mes rendez-vous (PATIENT)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/rendez-vous/patient", "host": ["{{baseUrl}}"], "path": ["api", "rendez-vous", "patient"] }
+          }
+        },
+        {
+          "name": "Mes rendez-vous (MEDECIN)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/rendez-vous/medecin", "host": ["{{baseUrl}}"], "path": ["api", "rendez-vous", "medecin"] }
+          }
+        },
+        {
+          "name": "Detail rendez-vous",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/rendez-vous/{{rendezVousId}}", "host": ["{{baseUrl}}"], "path": ["api", "rendez-vous", "{{rendezVousId}}"] }
+          }
+        },
+        {
+          "name": "Confirmer rendez-vous (MEDECIN/ADMIN)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"statut\": \"CONFIRME\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/rendez-vous/{{rendezVousId}}/statut", "host": ["{{baseUrl}}"], "path": ["api", "rendez-vous", "{{rendezVousId}}", "statut"] }
+          }
+        },
+        {
+          "name": "Annuler rendez-vous (PATIENT)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"statut\": \"ANNULE\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/rendez-vous/{{rendezVousId}}/statut", "host": ["{{baseUrl}}"], "path": ["api", "rendez-vous", "{{rendezVousId}}", "statut"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Consultations",
+      "item": [
+        {
+          "name": "Creer consultation (MEDECIN)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rendezVousId\": {{rendezVousId}},\n  \"notes\": \"Patient en bonne sante generale, tension normale.\",\n  \"diagnostic\": \"Rhinopharyngite virale benigne.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/consultations", "host": ["{{baseUrl}}"], "path": ["api", "consultations"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ordonnances",
+      "item": [
+        {
+          "name": "Rediger ordonnance (MEDECIN)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.id) { pm.collectionVariables.set('ordonnanceId', json.id); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rendezVousId\": {{rendezVousId}},\n  \"dureeValiditeJours\": 30,\n  \"lignes\": [\n    { \"medicament\": \"Acetaminophene 500mg\", \"posologie\": \"1 comprime 3x par jour\", \"dureeTraitement\": \"5 jours\" },\n    { \"medicament\": \"Sirop antitussif\", \"posologie\": \"10 ml au coucher\", \"dureeTraitement\": \"7 jours\" }\n  ]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/ordonnances", "host": ["{{baseUrl}}"], "path": ["api", "ordonnances"] }
+          }
+        },
+        {
+          "name": "Mes ordonnances (PATIENT/MEDECIN)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/ordonnances/mes", "host": ["{{baseUrl}}"], "path": ["api", "ordonnances", "mes"] }
+          }
+        },
+        {
+          "name": "Detail ordonnance",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/ordonnances/{{ordonnanceId}}", "host": ["{{baseUrl}}"], "path": ["api", "ordonnances", "{{ordonnanceId}}"] }
+          }
+        },
+        {
+          "name": "Ordonnances d'un patient (ADMIN/MEDECIN)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/ordonnances/patient/{{patientId}}", "host": ["{{baseUrl}}"], "path": ["api", "ordonnances", "patient", "{{patientId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dossiers medicaux",
+      "item": [
+        {
+          "name": "Mon dossier (PATIENT)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/dossiers/mon-dossier", "host": ["{{baseUrl}}"], "path": ["api", "dossiers", "mon-dossier"] }
+          }
+        },
+        {
+          "name": "Dossier d'un patient (ADMIN/MEDECIN/PATIENT)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/dossiers/{{patientId}}", "host": ["{{baseUrl}}"], "path": ["api", "dossiers", "{{patientId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        {
+          "name": "Notifications d'un rendez-vous (ADMIN/MEDECIN)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/notifications/rendez-vous/{{rendezVousId}}", "host": ["{{baseUrl}}"], "path": ["api", "notifications", "rendez-vous", "{{rendezVousId}}"] }
+          }
+        }
+      ]
+    }
+  ]
+}
